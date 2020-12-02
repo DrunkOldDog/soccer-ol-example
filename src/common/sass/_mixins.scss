@@ -1,0 +1,14 @@
+@mixin responsive-padding ($adove: 0, $sides: 0) {
+  padding: $adove $sides;
+  $divider: $sides / 2;
+
+  @media only screen and (min-width: 600px) and (max-width: 899px) {
+    $res-sides: ($sides - $divider);
+    padding: $adove $res-sides;
+  }
+
+  @media only screen and (min-width: 480px) and (max-width: 599px) {
+    $res-sides: ($sides - $divider - ($divider / 2));
+    padding: $adove $res-sides;
+  }
+}

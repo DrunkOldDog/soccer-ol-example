@@ -1,0 +1,48 @@
+.app {
+  height: 100vh;
+
+  .grid-container {
+    height: calc(100% - 72px); // 72 cause of navbar size
+
+    .players-section {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+  
+      .table-section {
+        flex: 1;
+      }
+  
+      .action-btn {
+        display: flex;
+        flex: 1;
+        background-color: #608038;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        color: #FFFFFF;
+
+        h2 { margin-bottom: 10px; }
+
+        button {
+          background-color: transparent;
+          border: 1px solid white;
+          box-sizing: border-box;
+          padding: 15px 60px;
+          color: white;
+          font-size: 1.1em;
+          cursor: pointer;
+
+          &:focus {
+            border: none;
+            outline: 1px solid white;
+          }
+
+          &:active {
+            background-color: rgba($color: #FFFFFF, $alpha: .2);
+          }
+        }
+      }
+    }
+  }
+}

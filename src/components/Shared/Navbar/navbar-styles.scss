@@ -1,0 +1,10 @@
+@import '../../../common/sass/mixins';
+
+.navbar {
+  @include responsive-padding(5px, 140px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 62px;
+  box-shadow: 0px 4px 10px -3px rgba(147, 147, 147, 0.25);
+}

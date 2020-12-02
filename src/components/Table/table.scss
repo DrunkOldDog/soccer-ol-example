@@ -1,0 +1,46 @@
+table {
+  width: 100%;
+  $row-height: 50px;
+
+  .image-header {
+    width: 70px;
+  }
+  
+  tr {
+    height: $row-height;
+    box-shadow: 0px 2px 8px -3px rgba(147, 147, 147, 0.25);
+  }
+
+  th, td:not(:first-child) {
+    padding-left: 15px;
+  }
+
+  td img {
+    height: $row-height;
+  }
+
+  @media only screen and (min-width: 1400px){
+    tr, td img {
+      height: 60px;
+    }
+  } 
+
+
+  .player-name-cell {
+    font-weight: bold !important;
+  
+    span {
+      font-size: 0.8em;
+      color: #757575;
+    }
+  
+    p {
+      margin-top: -4px;
+    }
+  }
+
+  .player-number-cell {
+    font-weight: bold;
+    font-size: 1.3em;
+  }
+}
