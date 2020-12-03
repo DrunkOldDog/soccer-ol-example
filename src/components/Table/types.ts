@@ -3,5 +3,7 @@ export interface PlayerInterface {
   playerImage: string,
   playerFirstName?: string,
   playerLastName?: string,
-  playerNumber: number
+  playerNumber: number,
+  position: Array<number>,
+  color: string
 }
