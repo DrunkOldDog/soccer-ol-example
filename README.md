@@ -1,5 +1,7 @@
 # Soccer Trainer - Openlayers Workshop
 
+![soccer-trainer](https://imgur.com/gallery/ZUOLPWQ)
+
 This project is focused exclusively on the learning of the Openlayers React library, with the usage of Typescript and doesn't have professional endings, only educational ones. So the code was uniquely developed focused on the understaning of this library. This project has different sections separated with branches, so you can check each one to see the changes. Current Version 0.1.0.
 
 ## Project Sections
