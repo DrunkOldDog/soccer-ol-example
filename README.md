@@ -35,5 +35,5 @@ Addition of a Scoreboard on the Table so it displays which player has won the sp
 
 If you are interested in how the workshop works or have any doubt contact me, I'll be pleased to help!
 
-https://www.linkedin.com/in/juanireyes/
+https://www.linkedin.com/in/juanireyes/  
 https://juanireyes.com
