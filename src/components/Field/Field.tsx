@@ -11,6 +11,7 @@ import { toContext } from 'ol/render';
 import { drawPlayer, drawPlayerJersey } from './fieldUtils/mapStyles';
 import CanvasImmediateRenderer from 'ol/render/canvas/Immediate';
 import { dummyPlayers } from '../../common/dummy/dummies';
+import { FIELD_END_LINE, PLAYER_SPEED_LIMIT } from '../../common/helpers/constants';
 
 const getMapDeltaCoordinates = (field : Map, canvasExtent : Extent) => {
   const mapExtent = field.getView().calculateExtent(field.getSize());
@@ -19,9 +20,51 @@ const getMapDeltaCoordinates = (field : Map, canvasExtent : Extent) => {
   return [mapOrigin[0] - canvasOrigin[0], mapOrigin[1] - canvasOrigin[1]];
 }
 
-export const Field = () => {
+const getImageLayer = (field : Map) => field.getLayers().getArray().slice(-1);
+
+export const Field = ({ play, setPlay } : { play: boolean, setPlay: Function }) => {
+
   const [field, setField] = useState<Map>();
+  const [players, setPlayers] = useState([...dummyPlayers]);
   const [dimensions, setDimensions] = useState<any>();
+
+  const makePlayersRun = async () => {
+    const [canvasLayer] = getImageLayer(field!) as any;
+    for (let i = 0;; i++) {
+      const unmutedPlayers = [...players];
+      await new Promise(resolve => setTimeout(resolve, 50));
+
+      const trigger = unmutedPlayers.some((player, index) => {
+        const [xPos, yPos] = player.position;
+        const position = [xPos + Math.random() * PLAYER_SPEED_LIMIT, yPos];
+        unmutedPlayers[index] = Object.assign(unmutedPlayers[index], { position });
+        return FIELD_END_LINE <= position[0];
+      })
+
+      setPlayers(unmutedPlayers);
+      canvasLayer.getSource().changed();
+
+      if (trigger) {
+        setPlay(false);
+        await new Promise(resolve => setTimeout(resolve, 1));
+        resetDummyData();
+        break;
+      }
+    }
+  }
+
+  const resetDummyData = ()=> {
+    dummyPlayers.forEach(player => {
+      const [, yPos] = player.position;
+      player.position = [280, yPos];
+    })
+  }
+
+  useEffect(() => {
+    if (play && field) {
+      makePlayersRun();
+    }
+  }, [play, field]);
 
   const getImageDimensions = () => {
     return new Promise((resolved, rejected) => {
@@ -68,7 +111,7 @@ export const Field = () => {
 
   const drawCanvasFeatures = (toCtx : CanvasImmediateRenderer, extent: Extent) => {
     const [xDelta, yDelta] = getMapDeltaCoordinates(field as Map, extent);
-    dummyPlayers.forEach(player => {
+    players.forEach(player => {
       const { position, color, playerNumber } = player;
       const [xPixelPos, yPixelPos] = field?.getPixelFromCoordinate(position) as Array<number>;
       const [xPlayerPos, yPlayerPos] = [xPixelPos + xDelta, yPixelPos + yDelta];
@@ -85,10 +128,12 @@ export const Field = () => {
 
   return (
     <div className="field-body">
-      <ImageMap 
-        setField={setField}
-        dimensions={dimensions}
-      />
+      {dimensions && (
+        <ImageMap 
+          setField={setField} 
+          dimensions={dimensions} 
+          />
+        )}
     </div>
   )
 }
