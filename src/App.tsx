@@ -7,6 +7,7 @@ import Table from './components/Table/Table';
 
 function App() {
   const [play, setPlay] = useState(false);
+  const [scoreBoard, setScoreBoard] = useState({});
 
   return (
     <div className="app">
@@ -17,12 +18,16 @@ function App() {
           <Field 
             play={play}
             setPlay={setPlay}
+            scoreBoard={scoreBoard}
+            setScoreboard={setScoreBoard}
           />
         </Grid>
 
         <Grid item lg={4} md={4} sm={12} xs={12} className="players-section">
           <div className="table-section">
-            <Table />
+            <Table 
+              scoreBoard={scoreBoard}
+            />
           </div>
 
           <div className="action-btn">

@@ -12,6 +12,7 @@ import { drawPlayer, drawPlayerJersey } from './fieldUtils/mapStyles';
 import CanvasImmediateRenderer from 'ol/render/canvas/Immediate';
 import { dummyPlayers } from '../../common/dummy/dummies';
 import { FIELD_END_LINE, PLAYER_SPEED_LIMIT } from '../../common/helpers/constants';
+import { FieldInterface } from './types';
 
 const getMapDeltaCoordinates = (field : Map, canvasExtent : Extent) => {
   const mapExtent = field.getView().calculateExtent(field.getSize());
@@ -22,7 +23,7 @@ const getMapDeltaCoordinates = (field : Map, canvasExtent : Extent) => {
 
 const getImageLayer = (field : Map) => field.getLayers().getArray().slice(-1);
 
-export const Field = ({ play, setPlay } : { play: boolean, setPlay: Function }) => {
+export const Field = ({ play, setPlay, scoreBoard, setScoreboard } : FieldInterface) => {
 
   const [field, setField] = useState<Map>();
   const [players, setPlayers] = useState([...dummyPlayers]);
@@ -34,10 +35,12 @@ export const Field = ({ play, setPlay } : { play: boolean, setPlay: Function }) 
       const unmutedPlayers = [...players];
       await new Promise(resolve => setTimeout(resolve, 50));
 
+      let winnerPlayerId = 0;
       const trigger = unmutedPlayers.some((player, index) => {
         const [xPos, yPos] = player.position;
         const position = [xPos + Math.random() * PLAYER_SPEED_LIMIT, yPos];
         unmutedPlayers[index] = Object.assign(unmutedPlayers[index], { position });
+        winnerPlayerId = player.playerId;
         return FIELD_END_LINE <= position[0];
       })
 
@@ -46,6 +49,8 @@ export const Field = ({ play, setPlay } : { play: boolean, setPlay: Function }) 
 
       if (trigger) {
         setPlay(false);
+        const actualScore = scoreBoard[winnerPlayerId] ? scoreBoard[winnerPlayerId] + 1 : 1;
+        setScoreboard({ ...scoreBoard, [winnerPlayerId]: actualScore });
         await new Promise(resolve => setTimeout(resolve, 1));
         resetDummyData();
         break;
